@@ -1,0 +1,17 @@
+# Godot-generated cache and imported assets.
+.godot/
+*.translation
+
+# Generated Android builds and exported game binaries.
+/android/
+/build/
+/exports/
+
+# Local export credentials.
+export_credentials.cfg
+
+# Editor and operating system metadata.
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
