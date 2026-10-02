@@ -27,3 +27,9 @@ metadata/placeholder = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_placeholder")
 metadata/placeholder = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 0)
+enabled = true
+zoom = Vector2(1, 1)
+position_smoothing_enabled = false
