@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3]
+
+; ECHOES-005: visual e colisão provisórios (placeholders), sem gameplay.
+
+[sub_resource type="Gradient" id="Gradient_placeholder"]
+colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_placeholder"]
+gradient = SubResource("Gradient_placeholder")
+width = 32
+height = 48
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_placeholder"]
+radius = 12.0
+height = 40.0
+
+[node name="Player" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_placeholder")
+metadata/placeholder = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_placeholder")
+metadata/placeholder = true
