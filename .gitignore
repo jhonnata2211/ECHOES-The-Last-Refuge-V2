@@ -15,3 +15,6 @@ export_credentials.cfg
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Android media scanner
+.nomedia
