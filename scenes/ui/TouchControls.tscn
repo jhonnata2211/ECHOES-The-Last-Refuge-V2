@@ -1,0 +1,106 @@
+[gd_scene load_steps=6 format=3]
+
+; ECHOES-008: direcional touchscreen provisório, com placeholders internos.
+
+[sub_resource type="Gradient" id="Gradient_normal_placeholder"]
+colors = PackedColorArray(0.12, 0.22, 0.35, 0.9, 0.12, 0.22, 0.35, 0.9)
+
+[sub_resource type="GradientTexture2D" id="Texture_normal_placeholder"]
+gradient = SubResource("Gradient_normal_placeholder")
+width = 64
+height = 64
+
+[sub_resource type="Gradient" id="Gradient_pressed_placeholder"]
+colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="Texture_pressed_placeholder"]
+gradient = SubResource("Gradient_pressed_placeholder")
+width = 64
+height = 64
+
+[sub_resource type="RectangleShape2D" id="Shape_button_placeholder"]
+size = Vector2(64, 64)
+
+[node name="TouchControls" type="CanvasLayer"]
+layer = 1
+
+[node name="Directional" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = -32.0
+grow_vertical = 0
+mouse_filter = 2
+metadata/placeholder = true
+
+[node name="Up" type="TouchScreenButton" parent="Directional"]
+position = Vector2(80, 0)
+texture_normal = SubResource("Texture_normal_placeholder")
+texture_pressed = SubResource("Texture_pressed_placeholder")
+shape = SubResource("Shape_button_placeholder")
+action = "move_up"
+visibility_mode = 0
+
+[node name="Arrow" type="Label" parent="Directional/Up"]
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "↑"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Down" type="TouchScreenButton" parent="Directional"]
+position = Vector2(80, 160)
+texture_normal = SubResource("Texture_normal_placeholder")
+texture_pressed = SubResource("Texture_pressed_placeholder")
+shape = SubResource("Shape_button_placeholder")
+action = "move_down"
+visibility_mode = 0
+
+[node name="Arrow" type="Label" parent="Directional/Down"]
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "↓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Left" type="TouchScreenButton" parent="Directional"]
+position = Vector2(0, 80)
+texture_normal = SubResource("Texture_normal_placeholder")
+texture_pressed = SubResource("Texture_pressed_placeholder")
+shape = SubResource("Shape_button_placeholder")
+action = "move_left"
+visibility_mode = 0
+
+[node name="Arrow" type="Label" parent="Directional/Left"]
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "←"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Right" type="TouchScreenButton" parent="Directional"]
+position = Vector2(160, 80)
+texture_normal = SubResource("Texture_normal_placeholder")
+texture_pressed = SubResource("Texture_pressed_placeholder")
+shape = SubResource("Shape_button_placeholder")
+action = "move_right"
+visibility_mode = 0
+
+[node name="Arrow" type="Label" parent="Directional/Right"]
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "→"
+horizontal_alignment = 1
+vertical_alignment = 1
