@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+; ECHOES-010: cenário provisório de teste (placeholders), sem colisões.
+
+[node name="TestWorld" type="Node2D"]
+z_index = -10
+metadata/placeholder = true
+
+[node name="Ground" type="Polygon2D" parent="."]
+color = Color(0.11, 0.16, 0.15, 1)
+polygon = PackedVector2Array(0, 0, 2560, 0, 2560, 1440, 0, 1440)
+
+[node name="Ruins" type="Node2D" parent="."]
+
+[node name="NorthWest" type="Polygon2D" parent="Ruins"]
+position = Vector2(360, 240)
+color = Color(0.33, 0.35, 0.34, 1)
+polygon = PackedVector2Array(0, 0, 180, 0, 180, 40, 45, 40, 45, 140, 0, 140)
+
+[node name="Central" type="Polygon2D" parent="Ruins"]
+position = Vector2(1040, 520)
+color = Color(0.34, 0.36, 0.34, 1)
+polygon = PackedVector2Array(0, 0, 150, 0, 150, 36, 36, 36, 36, 110, 0, 110)
+
+[node name="East" type="Polygon2D" parent="Ruins"]
+position = Vector2(1900, 440)
+color = Color(0.31, 0.33, 0.32, 1)
+polygon = PackedVector2Array(0, 0, 200, 0, 200, 130, 150, 130, 150, 40, 0, 40)
+
+[node name="SouthWest" type="Polygon2D" parent="Ruins"]
+position = Vector2(600, 1050)
+color = Color(0.32, 0.34, 0.34, 1)
+polygon = PackedVector2Array(0, 0, 220, 0, 220, 40, 50, 40, 50, 150, 0, 150)
+
+[node name="Vegetation" type="Node2D" parent="."]
+
+[node name="North" type="Polygon2D" parent="Vegetation"]
+position = Vector2(1100, 220)
+color = Color(0.17, 0.25, 0.19, 1)
+polygon = PackedVector2Array(0, 30, 70, 0, 170, 20, 180, 90, 90, 120, 10, 100)
+
+[node name="West" type="Polygon2D" parent="Vegetation"]
+position = Vector2(220, 720)
+color = Color(0.16, 0.23, 0.18, 1)
+polygon = PackedVector2Array(0, 40, 50, 0, 160, 20, 180, 100, 100, 150, 10, 120)
+
+[node name="East" type="Polygon2D" parent="Vegetation"]
+position = Vector2(2210, 780)
+color = Color(0.18, 0.26, 0.20, 1)
+polygon = PackedVector2Array(0, 30, 60, 0, 160, 10, 170, 90, 80, 130, 10, 100)
+
+[node name="SouthCentral" type="Polygon2D" parent="Vegetation"]
+position = Vector2(1520, 820)
+color = Color(0.17, 0.24, 0.18, 1)
+polygon = PackedVector2Array(0, 25, 50, 0, 125, 10, 160, 75, 100, 110, 10, 90)
+
+[node name="Stones" type="Node2D" parent="."]
+
+[node name="NorthCentral" type="Polygon2D" parent="Stones"]
+position = Vector2(820, 390)
+color = Color(0.29, 0.31, 0.30, 1)
+polygon = PackedVector2Array(0, 12, 20, 0, 60, 4, 78, 28, 60, 50, 10, 45)
+
+[node name="EastCentral" type="Polygon2D" parent="Stones"]
+position = Vector2(1610, 610)
+color = Color(0.30, 0.32, 0.31, 1)
+polygon = PackedVector2Array(0, 10, 25, 0, 70, 8, 85, 35, 55, 55, 8, 40)
+
+[node name="SouthEast" type="Polygon2D" parent="Stones"]
+position = Vector2(2080, 1210)
+color = Color(0.28, 0.30, 0.29, 1)
+polygon = PackedVector2Array(0, 15, 30, 0, 90, 10, 110, 40, 70, 65, 10, 50)
+
+[node name="TerrainMarks" type="Node2D" parent="."]
+
+[node name="West" type="Polygon2D" parent="TerrainMarks"]
+position = Vector2(720, 700)
+color = Color(0.22, 0.25, 0.22, 1)
+polygon = PackedVector2Array(0, 0, 120, 0, 120, 10, 0, 10)
+
+[node name="Central" type="Polygon2D" parent="TerrainMarks"]
+position = Vector2(1150, 760)
+color = Color(0.23, 0.26, 0.23, 1)
+polygon = PackedVector2Array(0, 0, 150, 0, 150, 12, 0, 12)
+
+[node name="SouthEast" type="Polygon2D" parent="TerrainMarks"]
+position = Vector2(1770, 1000)
+color = Color(0.21, 0.24, 0.21, 1)
+polygon = PackedVector2Array(0, 0, 110, 0, 110, 10, 0, 10)
