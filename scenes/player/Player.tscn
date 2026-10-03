@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 ; ECHOES-005: visual e colisão provisórios (placeholders).
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="SpriteFrames" path="res://resources/player/john_v1_frames.tres" id="2_john_frames"]
 
 [sub_resource type="Gradient" id="Gradient_placeholder"]
 colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
@@ -21,8 +22,15 @@ motion_mode = 1
 script = ExtResource("1_player")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = SubResource("GradientTexture2D_placeholder")
 metadata/placeholder = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = ExtResource("2_john_frames")
+animation = &"idle_down"
+metadata/asset_pending = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_placeholder")
