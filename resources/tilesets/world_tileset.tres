@@ -1,6 +1,24 @@
-[gd_resource type="TileSet" format=3]
+[gd_resource type="TileSet" load_steps=3 format=3]
+
+; ECHOES-012: atlas técnico placeholder de 32x32, sem arte final.
+
+[ext_resource type="Texture2D" path="res://assets/sprites/placeholders/forest_tiles_placeholder.svg" id="1_placeholder_atlas"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_forest_placeholder"]
+texture = ExtResource("1_placeholder_atlas")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-11, -14, 11, -14, 11, 14, -11, 14)
+5:0/0 = 0
+5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -10, 12, -10, 12, 12, -12, 12)
 
 [resource]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 1
+sources/0 = SubResource("TileSetAtlasSource_forest_placeholder")
