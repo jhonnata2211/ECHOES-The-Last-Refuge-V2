@@ -3,6 +3,7 @@ extends CharacterBody2D
 const JOHN_TEXTURE_PATH: String = "res://assets/sprites/player/john_v1.png"
 
 @export var move_speed: float = 200.0
+@export var sprint_speed: float = 320.0
 
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _placeholder_sprite: Sprite2D = $Sprite2D
@@ -10,6 +11,7 @@ const JOHN_TEXTURE_PATH: String = "res://assets/sprites/player/john_v1.png"
 var _facing_direction: StringName = &"down"
 var _has_john_frames: bool = false
 var _touch_direction := Vector2.ZERO
+var _touch_sprint_pressed: bool = false
 
 
 func _ready() -> void:
@@ -24,13 +26,19 @@ func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if direction == Vector2.ZERO:
 		direction = _touch_direction
-	velocity = direction * move_speed
+	var sprint_pressed := Input.is_action_pressed("sprint") or _touch_sprint_pressed
+	var current_speed := sprint_speed if sprint_pressed else move_speed
+	velocity = direction * current_speed
 	move_and_slide()
 	_update_animation(direction)
 
 
 func set_touch_direction(direction: Vector2) -> void:
 	_touch_direction = direction.limit_length(1.0)
+
+
+func set_touch_sprint_pressed(pressed: bool) -> void:
+	_touch_sprint_pressed = pressed
 
 
 func _update_animation(input_direction: Vector2) -> void:
