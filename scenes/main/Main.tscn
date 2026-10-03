@@ -12,3 +12,5 @@
 position = Vector2(336, 1136)
 
 [node name="TouchControls" parent="." instance=ExtResource("2_touch_controls")]
+
+[connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]

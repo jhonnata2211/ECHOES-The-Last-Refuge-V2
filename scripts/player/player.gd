@@ -9,6 +9,7 @@ const JOHN_TEXTURE_PATH: String = "res://assets/sprites/player/john_v1.png"
 
 var _facing_direction: StringName = &"down"
 var _has_john_frames: bool = false
+var _touch_direction := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -21,9 +22,15 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if direction == Vector2.ZERO:
+		direction = _touch_direction
 	velocity = direction * move_speed
 	move_and_slide()
 	_update_animation(direction)
+
+
+func set_touch_direction(direction: Vector2) -> void:
+	_touch_direction = direction.limit_length(1.0)
 
 
 func _update_animation(input_direction: Vector2) -> void:
@@ -34,7 +41,7 @@ func _update_animation(input_direction: Vector2) -> void:
 		else:
 			_facing_direction = &"down" if input_direction.y > 0.0 else &"up"
 
-	var state := "idle" if get_real_velocity().is_zero_approx() else "walk"
+	var state := "idle" if input_direction.is_zero_approx() or get_real_velocity().is_zero_approx() else "walk"
 	var animation_name := StringName("%s_%s" % [state, _facing_direction])
 	if _has_john_frames:
 		_animated_sprite.play(animation_name)
