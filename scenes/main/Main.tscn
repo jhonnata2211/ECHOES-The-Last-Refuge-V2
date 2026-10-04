@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="2_touch_controls"]
 [ext_resource type="PackedScene" path="res://scenes/world/TestWorld.tscn" id="3_test_world"]
 [ext_resource type="PackedScene" path="res://scenes/objects/InteractionTestObject.tscn" id="4_interaction_test"]
+[ext_resource type="PackedScene" path="res://scenes/items/CollectibleItem.tscn" id="5_collectible"]
+[ext_resource type="Script" path="res://scripts/items/collection_test_recorder.gd" id="6_collection_recorder"]
 
 [node name="Main" type="Node2D"]
 
@@ -17,7 +19,14 @@ position = Vector2(336, 1136)
 [node name="InteractionTestObject" parent="." instance=ExtResource("4_interaction_test")]
 position = Vector2(336, 1168)
 
+[node name="Sucata" parent="." instance=ExtResource("5_collectible")]
+position = Vector2(400, 1136)
+
+[node name="CollectionTestRecorder" type="Node" parent="."]
+script = ExtResource("6_collection_recorder")
+
 [connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]
 [connection signal="sprint_changed" from="TouchControls/SprintButton" to="Player" method="set_touch_sprint_pressed"]
 [connection signal="interaction_requested" from="TouchControls/InteractionButton" to="Player" method="request_interaction"]
 [connection signal="target_changed" from="Player/InteractionDetector" to="TouchControls/InteractionButton" method="set_interaction_target"]
+[connection signal="collected" from="Sucata" to="CollectionTestRecorder" method="record_collection"]

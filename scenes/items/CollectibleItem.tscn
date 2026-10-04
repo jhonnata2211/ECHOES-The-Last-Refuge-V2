@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3]
+
+; ECHOES-019B: Sucata placeholder técnico, sem asset externo ou colisão sólida.
+
+[ext_resource type="Script" path="res://scripts/items/collectible_item.gd" id="1_collectible"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="2_interactable"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interactable"]
+radius = 12.0
+
+[node name="CollectibleItem" type="Node2D"]
+script = ExtResource("1_collectible")
+metadata/placeholder = true
+
+[node name="Visual" type="Polygon2D" parent="."]
+color = Color(0.63, 0.68, 0.7, 1)
+polygon = PackedVector2Array(-12, -8, 5, -10, 12, -2, 8, 10, -10, 8)
+
+[node name="RustMark" type="Polygon2D" parent="."]
+color = Color(0.7, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-7, -3, 7, -5, 6, 0, -6, 3)
+
+[node name="Interactable" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_interactable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+shape = SubResource("CircleShape2D_interactable")
+
+[connection signal="interacted" from="Interactable" to="." method="_on_interacted"]
