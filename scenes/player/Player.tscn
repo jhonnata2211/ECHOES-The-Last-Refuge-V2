@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 ; ECHOES-005: visual e colisão provisórios (placeholders).
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
 [ext_resource type="SpriteFrames" path="res://resources/player/john_v1_frames.tres" id="2_john_frames"]
+[ext_resource type="Script" path="res://scripts/player/interaction_detector.gd" id="3_interaction_detector"]
 
 [sub_resource type="Gradient" id="Gradient_placeholder"]
 colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
@@ -16,6 +17,9 @@ height = 48
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_placeholder"]
 radius = 12.0
 height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 48.0
 
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
@@ -45,3 +49,12 @@ limit_top = 0
 limit_right = 2560
 limit_bottom = 1440
 position_smoothing_enabled = false
+
+[node name="InteractionDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("3_interaction_detector")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionDetector"]
+shape = SubResource("CircleShape2D_interaction")

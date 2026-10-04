@@ -16,6 +16,7 @@ signal stamina_changed(current: float, maximum: float)
 
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _placeholder_sprite: Sprite2D = $Sprite2D
+@onready var _interaction_detector: InteractionDetector = $InteractionDetector
 
 var _facing_direction: StringName = &"down"
 var _has_john_frames: bool = false
@@ -25,6 +26,8 @@ var _touch_sprint_pressed: bool = false
 var _stamina: float
 var _stamina_exhausted: bool = false
 var _stamina_recovery_timer: float = 0.0
+
+
 
 
 func _ready() -> void:
@@ -52,6 +55,10 @@ func _physics_process(delta: float) -> void:
         move_and_slide()
         _update_animation(direction)
 
+        if Input.is_action_just_pressed("interact"):
+                request_interaction()
+        _interaction_detector.process_interaction(self, get_facing_vector())
+
 
 func set_touch_direction(direction: Vector2) -> void:
         _touch_direction = direction.limit_length(1.0)
@@ -59,6 +66,22 @@ func set_touch_direction(direction: Vector2) -> void:
 
 func set_touch_sprint_pressed(pressed: bool) -> void:
         _touch_sprint_pressed = pressed
+
+
+func get_facing_vector() -> Vector2:
+        match _facing_direction:
+                &"up":
+                        return Vector2.UP
+                &"left":
+                        return Vector2.LEFT
+                &"right":
+                        return Vector2.RIGHT
+                _:
+                        return Vector2.DOWN
+
+
+func request_interaction() -> void:
+        _interaction_detector.request_interaction()
 
 
 func get_stamina() -> float:
