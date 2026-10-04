@@ -9,6 +9,8 @@ func _ready() -> void:
 	$GameplayHUD.bind_sources($Player/HealthComponent, $Player)
 	$InventoryPanel.bind_inventory($Player/Inventory)
 	$InventoryPanel.open_changed.connect(_on_inventory_open_changed)
+	var sound: SoundExperienceController = get_tree().root.get_node("SoundExperience")
+	sound.start_forest()
 
 
 func _on_inventory_open_changed(opened: bool) -> void:

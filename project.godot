@@ -14,6 +14,10 @@ config/name="ECHOES: The Last Refuge"
 run/main_scene="res://scenes/ui/MainMenu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+SoundExperience="*res://scenes/audio/SoundExperience.tscn"
+
 [display]
 
 window/size/viewport_width=1280

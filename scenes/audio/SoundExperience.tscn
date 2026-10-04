@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+; AUDIO-001: controlador persistente; todos os áudios são provisórios/referência.
+
+[ext_resource type="Script" path="res://scripts/audio/sound_experience.gd" id="1_sound"]
+
+[node name="SoundExperience" type="Node"]
+process_mode = 3
+script = ExtResource("1_sound")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -60.0
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+volume_db = -60.0
+
+[node name="Radio" type="AudioStreamPlayer" parent="."]
+volume_db = -60.0
