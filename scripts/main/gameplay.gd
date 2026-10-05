@@ -6,6 +6,7 @@ var _resume_serial: int = 0
 
 
 func _ready() -> void:
+	$StealthTestListener/NoiseListenerComponent.bind_source($Player/PlayerNoiseComponent)
 	$Player/SurvivalDamageComponent.bind_sources($Player/SurvivalNeedsComponent, $Player/HealthComponent)
 	$Player/ConsumableUseComponent.bind_sources($Player/Inventory, $Player/SurvivalNeedsComponent)
 	$GameplayHUD.bind_sources($Player/HealthComponent, $Player)
@@ -25,6 +26,9 @@ func _on_inventory_open_changed(opened: bool) -> void:
 			_previous_pause = get_tree().paused
 			_owns_pause = true
 		$TouchControls.hide()
+		$Player/FootstepsComponent.reset_steps()
+		$Player/PlayerNoiseComponent.clear_noise()
+		$StealthTestListener/NoiseListenerComponent.refresh_perception()
 		$Player.set_touch_direction(Vector2.ZERO)
 		$Player.set_touch_sprint_pressed(false)
 		get_tree().paused = true

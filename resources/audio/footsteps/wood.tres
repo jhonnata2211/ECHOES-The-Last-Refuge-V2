@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FootstepSurface" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/footstep_surface.gd" id="1_surface"]
+
+[resource]
+script = ExtResource("1_surface")
+surface_id = &"wood"
+stream_path = "res://assets/audio/sfx/footsteps/wood_footsteps.mp3"
+; Superfície preparada, não aplicada ao mapa. Calibração auditiva pendente.
+segment_starts = PackedFloat32Array(0.25, 0.85, 1.45, 2.05)
+segment_duration = 0.18

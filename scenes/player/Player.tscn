@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=22 format=3]
 
 ; ECHOES-005: visual e colisão provisórios (placeholders).
 
@@ -13,6 +13,13 @@
 [ext_resource type="Script" path="res://scripts/items/consumable_definition.gd" id="9_definition"]
 [ext_resource type="Resource" path="res://resources/items/water.tres" id="10_water"]
 [ext_resource type="Resource" path="res://resources/items/food.tres" id="11_food"]
+
+[ext_resource type="Script" path="res://scripts/components/crouch_component.gd" id="12_crouch"]
+[ext_resource type="Script" path="res://scripts/components/player_noise_component.gd" id="13_noise"]
+[ext_resource type="Script" path="res://scripts/audio/footsteps_component.gd" id="14_footsteps"]
+[ext_resource type="Script" path="res://scripts/audio/footstep_surface.gd" id="15_surface"]
+[ext_resource type="Resource" path="res://resources/audio/footsteps/grass.tres" id="16_grass"]
+[ext_resource type="Resource" path="res://resources/audio/footsteps/wood.tres" id="17_wood"]
 
 [sub_resource type="Gradient" id="Gradient_placeholder"]
 colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
@@ -82,3 +89,13 @@ script = ExtResource("7_survival_damage")
 [node name="ConsumableUseComponent" type="Node" parent="."]
 script = ExtResource("8_consumer")
 definitions = Array[ExtResource("9_definition")]([ExtResource("10_water"), ExtResource("11_food")])
+
+[node name="CrouchComponent" type="Node" parent="."]
+script = ExtResource("12_crouch")
+
+[node name="PlayerNoiseComponent" type="Node" parent="."]
+script = ExtResource("13_noise")
+
+[node name="FootstepsComponent" type="Node" parent="."]
+script = ExtResource("14_footsteps")
+surfaces = Array[ExtResource("15_surface")]([ExtResource("16_grass"), ExtResource("17_wood")])

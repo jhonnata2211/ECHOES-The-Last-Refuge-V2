@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FootstepSurface" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/footstep_surface.gd" id="1_surface"]
+[ext_resource type="AudioStreamMP3" path="res://assets/audio/sfx/footsteps/grass_footsteps.mp3" id="2_grass_stream"]
+
+[resource]
+script = ExtResource("1_surface")
+surface_id = &"grass"
+stream_path = "res://assets/audio/sfx/footsteps/grass_footsteps.mp3"
+source_stream = ExtResource("2_grass_stream")
+; PATCH FOOTSTEPS: percorrer trechos consecutivos, sem depender de quatro offsets.
+contiguous_segments = true
+segment_starts = PackedFloat32Array()
+segment_duration = 0.35

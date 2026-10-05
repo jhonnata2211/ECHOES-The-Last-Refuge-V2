@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/stealth_test_listener.gd" id="1_feedback"]
+[ext_resource type="Script" path="res://scripts/components/noise_listener_component.gd" id="2_listener"]
+
+[node name="StealthTestListener" type="Node2D"]
+script = ExtResource("1_feedback")
+metadata/placeholder = true
+metadata/test_only = true
+
+[node name="NoiseListenerComponent" type="Node2D" parent="."]
+script = ExtResource("2_listener")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -90.0
+offset_top = -64.0
+offset_right = 90.0
+offset_bottom = -28.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 14
+text = "TESTE DE RUÍDO\nNEUTRO"
+horizontal_alignment = 1

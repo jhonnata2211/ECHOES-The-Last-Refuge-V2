@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="2_touch_controls"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/InventoryPanel.tscn" id="8_inventory_panel"]
 [ext_resource type="PackedScene" path="res://scenes/items/WaterPickup.tscn" id="9_water_pickup"]
 [ext_resource type="PackedScene" path="res://scenes/items/FoodPickup.tscn" id="10_food_pickup"]
+
+[ext_resource type="PackedScene" path="res://scenes/objects/StealthTestListener.tscn" id="11_stealth_test"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("6_gameplay")
@@ -46,7 +48,13 @@ position = Vector2(464, 1200)
 [node name="Food2" parent="." instance=ExtResource("10_food_pickup")]
 position = Vector2(528, 1200)
 
+[node name="StealthTestListener" parent="." instance=ExtResource("11_stealth_test")]
+position = Vector2(720, 1136)
+
 [connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]
 [connection signal="sprint_changed" from="TouchControls/SprintButton" to="Player" method="set_touch_sprint_pressed"]
 [connection signal="interaction_requested" from="TouchControls/InteractionButton" to="Player" method="request_interaction"]
 [connection signal="target_changed" from="Player/InteractionDetector" to="TouchControls/InteractionButton" method="set_interaction_target"]
+
+[connection signal="crouch_toggle_requested" from="TouchControls/CrouchButton" to="Player" method="request_crouch_toggle"]
+[connection signal="crouch_changed" from="Player/CrouchComponent" to="TouchControls/CrouchButton" method="set_crouched"]

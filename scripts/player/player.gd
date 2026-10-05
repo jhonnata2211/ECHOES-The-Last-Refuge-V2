@@ -17,6 +17,9 @@ signal stamina_changed(current: float, maximum: float)
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _placeholder_sprite: Sprite2D = $Sprite2D
 @onready var _interaction_detector: InteractionDetector = $InteractionDetector
+@onready var _crouch: CrouchComponent = $CrouchComponent
+@onready var _noise: PlayerNoiseComponent = $PlayerNoiseComponent
+@onready var _footsteps: FootstepsComponent = $FootstepsComponent
 
 var _facing_direction: StringName = &"down"
 var _has_john_frames: bool = false
@@ -40,6 +43,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+        if Input.is_action_just_pressed("crouch"):
+                request_crouch_toggle()
+
         var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
         if direction == Vector2.ZERO:
                 direction = _touch_direction
@@ -48,16 +54,23 @@ func _physics_process(delta: float) -> void:
         var sprint_authorized := _can_sprint(sprint_requested, direction)
 
         var current_speed := sprint_speed if sprint_authorized else move_speed
+        if _crouch.is_crouched():
+                current_speed = _crouch.get_move_speed()
         velocity = direction * current_speed
 
         _update_stamina(delta, sprint_authorized)
 
+        var previous_position: Vector2 = global_position
         move_and_slide()
         _update_animation(direction)
 
         if Input.is_action_just_pressed("interact"):
                 request_interaction()
         _interaction_detector.process_interaction(self, get_facing_vector())
+
+        var displacement: Vector2 = global_position - previous_position
+        _noise.update_motion(displacement, _crouch.is_crouched(), sprint_authorized)
+        _footsteps.update_motion(displacement, delta, _crouch.is_crouched(), sprint_authorized)
 
 
 func set_touch_direction(direction: Vector2) -> void:
@@ -66,6 +79,10 @@ func set_touch_direction(direction: Vector2) -> void:
 
 func set_touch_sprint_pressed(pressed: bool) -> void:
         _touch_sprint_pressed = pressed
+
+
+func request_crouch_toggle() -> void:
+        _crouch.request_toggle()
 
 
 func get_facing_vector() -> Vector2:
@@ -93,6 +110,9 @@ func get_max_stamina() -> float:
 
 
 func _can_sprint(sprint_requested: bool, direction: Vector2) -> bool:
+        if _crouch.is_crouched():
+                return false
+
         if not sprint_requested:
                 return false
 
