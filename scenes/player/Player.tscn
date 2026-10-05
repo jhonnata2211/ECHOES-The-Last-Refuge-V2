@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=16 format=3]
 
 ; ECHOES-005: visual e colisão provisórios (placeholders).
 
@@ -7,6 +7,12 @@
 [ext_resource type="Script" path="res://scripts/player/interaction_detector.gd" id="3_interaction_detector"]
 [ext_resource type="Script" path="res://scripts/components/inventory.gd" id="4_inventory"]
 [ext_resource type="Script" path="res://scripts/components/health_component.gd" id="5_health"]
+[ext_resource type="Script" path="res://scripts/components/survival_needs_component.gd" id="6_needs"]
+[ext_resource type="Script" path="res://scripts/components/survival_damage_component.gd" id="7_survival_damage"]
+[ext_resource type="Script" path="res://scripts/components/consumable_use_component.gd" id="8_consumer"]
+[ext_resource type="Script" path="res://scripts/items/consumable_definition.gd" id="9_definition"]
+[ext_resource type="Resource" path="res://resources/items/water.tres" id="10_water"]
+[ext_resource type="Resource" path="res://resources/items/food.tres" id="11_food"]
 
 [sub_resource type="Gradient" id="Gradient_placeholder"]
 colors = PackedColorArray(0.25, 0.75, 1, 1, 0.25, 0.75, 1, 1)
@@ -66,3 +72,13 @@ script = ExtResource("4_inventory")
 
 [node name="HealthComponent" type="Node" parent="."]
 script = ExtResource("5_health")
+
+[node name="SurvivalNeedsComponent" type="Node" parent="."]
+script = ExtResource("6_needs")
+
+[node name="SurvivalDamageComponent" type="Node" parent="."]
+script = ExtResource("7_survival_damage")
+
+[node name="ConsumableUseComponent" type="Node" parent="."]
+script = ExtResource("8_consumer")
+definitions = Array[ExtResource("9_definition")]([ExtResource("10_water"), ExtResource("11_food")])

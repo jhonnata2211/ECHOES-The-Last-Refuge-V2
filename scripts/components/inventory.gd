@@ -5,6 +5,7 @@ signal inventory_changed()
 signal item_quantity_changed(item_id: StringName, quantity: int)
 
 var _items: Dictionary = {}
+var _use_in_progress: bool = false
 
 
 static func find_on(actor: Node) -> Inventory:
@@ -17,6 +18,8 @@ static func find_on(actor: Node) -> Inventory:
 
 
 func add_item(item_id: StringName, display_name: String, quantity: int) -> bool:
+	if _use_in_progress:
+		return false
 	if String(item_id).strip_edges().is_empty() or display_name.strip_edges().is_empty() or quantity <= 0:
 		return false
 	var previous: int = get_quantity(item_id)
@@ -39,6 +42,8 @@ func has_item(item_id: StringName, quantity: int = 1) -> bool:
 
 
 func remove_item(item_id: StringName, quantity: int = 1) -> bool:
+	if _use_in_progress:
+		return false
 	if not has_item(item_id, quantity):
 		return false
 	var remaining: int = get_quantity(item_id) - quantity
@@ -48,6 +53,26 @@ func remove_item(item_id: StringName, quantity: int = 1) -> bool:
 		_items[item_id]["quantity"] = remaining
 	item_quantity_changed.emit(item_id, remaining)
 	inventory_changed.emit()
+	return true
+
+
+func use_item(item_id: StringName, apply_effect: Callable) -> bool:
+	if _use_in_progress or is_queued_for_deletion() or not has_item(item_id) or not apply_effect.is_valid():
+		return false
+	# Proteger a pilha contra reentrada durante os sinais emitidos pelo efeito.
+	_use_in_progress = true
+	var applied: Variant = apply_effect.call()
+	if not applied is bool or not bool(applied):
+		_use_in_progress = false
+		return false
+	var remaining: int = get_quantity(item_id) - 1
+	if remaining == 0:
+		_items.erase(item_id)
+	else:
+		_items[item_id]["quantity"] = remaining
+	item_quantity_changed.emit(item_id, remaining)
+	inventory_changed.emit()
+	_use_in_progress = false
 	return true
 
 

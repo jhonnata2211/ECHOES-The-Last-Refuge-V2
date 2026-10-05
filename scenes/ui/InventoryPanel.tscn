@@ -101,10 +101,29 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 script = ExtResource("3_touch_scroll")
 
-[node name="Items" type="Label" parent="Overlay/Panel/Margin/Rows/Scroll"]
+[node name="Items" type="VBoxContainer" parent="Overlay/Panel/Margin/Rows/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Selection" type="HBoxContainer" parent="Overlay/Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Selected" type="Label" parent="Overlay/Panel/Margin/Rows/Selection"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_font_sizes/font_size = 24
-text = "Inventário vazio."
+text = "Selecione um item."
 autowrap_mode = 3
+
+[node name="UseButton" type="Button" parent="Overlay/Panel/Margin/Rows/Selection"]
+visible = false
+custom_minimum_size = Vector2(128, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "USAR"
+disabled = true
+script = ExtResource("2_menu_button")

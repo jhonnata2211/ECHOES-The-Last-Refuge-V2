@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3]
+
+; ECHOES-031: garrafa técnica placeholder; sem arte definitiva ou colisão sólida.
+
+[ext_resource type="PackedScene" path="res://scenes/items/CollectibleItem.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scripts/items/consumable_pickup.gd" id="2_pickup"]
+[ext_resource type="Resource" path="res://resources/items/water.tres" id="3_water"]
+
+[node name="WaterPickup" instance=ExtResource("1_base")]
+script = ExtResource("2_pickup")
+definition = ExtResource("3_water")
+metadata/placeholder = true
+
+[node name="Visual" parent="." index="0"]
+color = Color(0.25, 0.62, 0.8, 1)
+polygon = PackedVector2Array(-5, -13, 5, -13, 5, -7, 9, -4, 9, 12, -9, 12, -9, -4, -5, -7)
+
+[node name="RustMark" parent="." index="1"]
+color = Color(0.7, 0.9, 1, 1)
+polygon = PackedVector2Array(-7, -1, 7, -1, 7, 5, -7, 5)
+
+[node name="PlaceholderLabel" type="Label" parent="."]
+offset_left = -32.0
+offset_top = -35.0
+offset_right = 32.0
+offset_bottom = -15.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 13
+text = "ÁGUA"
+horizontal_alignment = 1

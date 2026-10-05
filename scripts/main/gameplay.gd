@@ -6,8 +6,12 @@ var _resume_serial: int = 0
 
 
 func _ready() -> void:
+	$Player/SurvivalDamageComponent.bind_sources($Player/SurvivalNeedsComponent, $Player/HealthComponent)
+	$Player/ConsumableUseComponent.bind_sources($Player/Inventory, $Player/SurvivalNeedsComponent)
 	$GameplayHUD.bind_sources($Player/HealthComponent, $Player)
+	$GameplayHUD.bind_survival($Player/SurvivalNeedsComponent)
 	$InventoryPanel.bind_inventory($Player/Inventory)
+	$InventoryPanel.bind_consumer($Player/ConsumableUseComponent)
 	$InventoryPanel.open_changed.connect(_on_inventory_open_changed)
 	var sound: SoundExperienceController = get_tree().root.get_node("SoundExperience")
 	sound.start_forest()

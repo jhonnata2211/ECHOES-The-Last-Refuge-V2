@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="2_touch_controls"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scripts/main/gameplay.gd" id="6_gameplay"]
 [ext_resource type="PackedScene" path="res://scenes/ui/GameplayHUD.tscn" id="7_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InventoryPanel.tscn" id="8_inventory_panel"]
+[ext_resource type="PackedScene" path="res://scenes/items/WaterPickup.tscn" id="9_water_pickup"]
+[ext_resource type="PackedScene" path="res://scenes/items/FoodPickup.tscn" id="10_food_pickup"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("6_gameplay")
@@ -31,6 +33,18 @@ position = Vector2(464, 1136)
 [node name="GameplayHUD" parent="." instance=ExtResource("7_hud")]
 
 [node name="InventoryPanel" parent="." instance=ExtResource("8_inventory_panel")]
+
+[node name="Water" parent="." instance=ExtResource("9_water_pickup")]
+position = Vector2(336, 1200)
+
+[node name="Water2" parent="." instance=ExtResource("9_water_pickup")]
+position = Vector2(400, 1200)
+
+[node name="Food" parent="." instance=ExtResource("10_food_pickup")]
+position = Vector2(464, 1200)
+
+[node name="Food2" parent="." instance=ExtResource("10_food_pickup")]
+position = Vector2(528, 1200)
 
 [connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]
 [connection signal="sprint_changed" from="TouchControls/SprintButton" to="Player" method="set_touch_sprint_pressed"]
