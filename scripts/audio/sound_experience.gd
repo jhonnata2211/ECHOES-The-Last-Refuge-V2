@@ -17,6 +17,7 @@ const SILENCE_DB: float = -60.0
 @export_group("Volumes em dB")
 @export_range(-40.0, 0.0, 0.5) var music_volume_db: float = -10.0
 @export_range(-40.0, 0.0, 0.5) var ambience_volume_db: float = -16.0
+@export_range(-50.0, 0.0, 0.5) var interior_ambience_volume_db: float = -30.0
 @export_range(-40.0, 0.0, 0.5) var radio_volume_db: float = -16.0
 
 @export_group("Tempos do protótipo em segundos")
@@ -25,6 +26,7 @@ const SILENCE_DB: float = -60.0
 @export_range(0.1, 5.0, 0.05) var music_fade_in: float = 1.2
 @export_range(0.1, 5.0, 0.05) var music_fade_out: float = 0.8
 @export_range(0.1, 5.0, 0.05) var ambience_fade_in: float = 2.0
+@export_range(0.1, 5.0, 0.05) var ambience_fade_out: float = 0.8
 
 var phase: Phase = Phase.IDLE
 var menu_music: AudioStreamMP3 = null
@@ -51,6 +53,7 @@ func _ready() -> void:
 	# Duplicar recursos evita alterar os MP3 e suas configurações de importação.
 	_music.stream = _playback_stream(menu_music, true)
 	_ambience.stream = _playback_stream(forest_ambience, true)
+	_ambience.volume_db = ambience_volume_db
 	_radio.stream = _playback_stream(radio_signal, false)
 	_available = true
 
@@ -107,14 +110,31 @@ func _finish_transition() -> void:
 func start_forest() -> void:
 	if not _available:
 		return
-	if phase == Phase.GAMEPLAY and _ambience.playing:
+	if phase != Phase.GAMEPLAY:
+		_stop_channels()
+		phase = Phase.GAMEPLAY
+	# Exterior é o padrão de gameplay, sem depender de um fade saindo de -60 dB.
+	_kill_tween(_ambience_tween)
+	_ambience_tween = null
+	_ambience.volume_db = ambience_volume_db
+	_ambience.stream_paused = false
+	if not _ambience.playing:
+		_ambience.play()
+
+
+func set_forest_interior(inside: bool) -> void:
+	if not _available or phase != Phase.GAMEPLAY:
 		return
-	_stop_channels()
-	phase = Phase.GAMEPLAY
-	_ambience.volume_db = SILENCE_DB
-	_ambience.play()
+	var target_db: float = interior_ambience_volume_db if inside else ambience_volume_db
+	var duration: float = ambience_fade_out if inside else ambience_fade_in
+	# Destinos absolutos; substituir o fade anterior evita reduções acumuladas.
+	_kill_tween(_ambience_tween)
+	_ambience.stream_paused = false
+	if not _ambience.playing:
+		_ambience.play()
 	_ambience_tween = create_tween()
-	_ambience_tween.tween_property(_ambience, "volume_db", ambience_volume_db, ambience_fade_in)
+	_ambience_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_ambience_tween.tween_property(_ambience, "volume_db", target_db, duration)
 
 
 func _play_radio(requested_duration: float, completed: Callable) -> void:

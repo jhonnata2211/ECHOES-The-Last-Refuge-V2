@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="2_touch_controls"]
@@ -15,6 +15,10 @@
 
 [ext_resource type="PackedScene" path="res://scenes/ai/StealthPrototypeThreat.tscn" id="12_threat"]
 [ext_resource type="PackedScene" path="res://scenes/audio/InventorySoundFeedback.tscn" id="13_feedback"]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/AbandonedHouse.tscn" id="14_house"]
+[ext_resource type="Script" path="res://scripts/world/interior_transition_controller.gd" id="15_transition"]
+[ext_resource type="PackedScene" path="res://scenes/interiors/AbandonedHouseInterior.tscn" id="16_interior"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("6_gameplay")
@@ -43,13 +47,13 @@ position = Vector2(464, 1136)
 position = Vector2(336, 1200)
 
 [node name="Water2" parent="." instance=ExtResource("9_water_pickup")]
-position = Vector2(400, 1200)
+position = Vector2(400, 528)
 
 [node name="Food" parent="." instance=ExtResource("10_food_pickup")]
 position = Vector2(464, 1200)
 
 [node name="Food2" parent="." instance=ExtResource("10_food_pickup")]
-position = Vector2(528, 1200)
+position = Vector2(2000, 848)
 
 [node name="StealthTestListener" parent="." instance=ExtResource("11_stealth_test")]
 position = Vector2(720, 1136)
@@ -58,6 +62,14 @@ position = Vector2(720, 1136)
 position = Vector2(784, 1008)
 
 [node name="InventorySoundFeedback" parent="." instance=ExtResource("13_feedback")]
+
+[node name="AbandonedHouse" parent="." instance=ExtResource("14_house")]
+position = Vector2(2064, 1040)
+
+[node name="InteriorTransition" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("15_transition")
+interior_scene = ExtResource("16_interior")
 
 [connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]
 [connection signal="sprint_changed" from="TouchControls/SprintButton" to="Player" method="set_touch_sprint_pressed"]

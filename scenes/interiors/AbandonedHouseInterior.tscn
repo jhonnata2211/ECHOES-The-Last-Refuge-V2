@@ -1,0 +1,467 @@
+[gd_scene load_steps=12 format=3]
+
+; SPRINT 05: primeiro interior técnico top-down; sem decoração/narrativa definitiva.
+[ext_resource type="Texture2D" path="res://assets/environment/buildings/rundown_house/A rundown house.png" id="1_house"]
+[ext_resource type="TileSet" path="res://resources/tilesets/house_wood_tileset.tres" id="2_wood"]
+[ext_resource type="Script" path="res://scripts/world/scene_portal.gd" id="3_portal"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="4_interactable"]
+[ext_resource type="PackedScene" path="res://scenes/items/FoodPickup.tscn" id="5_reward"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wall"]
+atlas = ExtResource("1_house")
+region = Rect2(208, 128, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_furniture"]
+atlas = ExtResource("1_house")
+region = Rect2(16, 16, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal"]
+size = Vector2(768, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical"]
+size = Vector2(32, 448)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_exit"]
+radius = 14.0
+
+[node name="AbandonedHouseInterior" type="Node2D"]
+texture_filter = 1
+metadata/technical_interior = true
+metadata/camera_bounds = Rect2(0, 0, 1280, 720)
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+z_index = -30
+color = Color(0.025, 0.03, 0.027, 1)
+polygon = PackedVector2Array(-8192, -8192, 8192, -8192, 8192, 8192, -8192, 8192)
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -20
+position = Vector2(256, 128)
+modulate = Color(2.2, 2.2, 2.2, 1)
+tile_set = ExtResource("2_wood")
+collision_enabled = false
+navigation_enabled = false
+tile_map_data = PackedByteArray("AAAAAAAAAAANAAIAAAABAAAAAAANAAIAAAACAAAAAAANAAIAAAADAAAAAAANAAIAAAAEAAAAAAANAAIAAAAFAAAAAAANAAIAAAAGAAAAAAANAAIAAAAHAAAAAAANAAIAAAAIAAAAAAANAAIAAAAJAAAAAAANAAIAAAAKAAAAAAANAAIAAAALAAAAAAANAAIAAAAMAAAAAAANAAIAAAANAAAAAAANAAIAAAAOAAAAAAANAAIAAAAPAAAAAAANAAIAAAAQAAAAAAANAAIAAAARAAAAAAANAAIAAAASAAAAAAANAAIAAAATAAAAAAANAAIAAAAUAAAAAAANAAIAAAAVAAAAAAANAAIAAAAWAAAAAAANAAIAAAAXAAAAAAANAAIAAAAAAAEAAAANAAIAAAABAAEAAAANAAIAAAACAAEAAAANAAIAAAADAAEAAAANAAIAAAAEAAEAAAANAAIAAAAFAAEAAAANAAIAAAAGAAEAAAANAAIAAAAHAAEAAAANAAIAAAAIAAEAAAANAAIAAAAJAAEAAAANAAIAAAAKAAEAAAANAAIAAAALAAEAAAANAAIAAAAMAAEAAAANAAIAAAANAAEAAAANAAIAAAAOAAEAAAANAAIAAAAPAAEAAAANAAIAAAAQAAEAAAANAAIAAAARAAEAAAANAAIAAAASAAEAAAANAAIAAAATAAEAAAANAAIAAAAUAAEAAAANAAIAAAAVAAEAAAANAAIAAAAWAAEAAAANAAIAAAAXAAEAAAANAAIAAAAAAAIAAAANAAIAAAABAAIAAAANAAIAAAACAAIAAAANAAIAAAADAAIAAAANAAIAAAAEAAIAAAANAAIAAAAFAAIAAAANAAIAAAAGAAIAAAANAAIAAAAHAAIAAAANAAIAAAAIAAIAAAANAAIAAAAJAAIAAAANAAIAAAAKAAIAAAANAAIAAAALAAIAAAANAAIAAAAMAAIAAAANAAIAAAANAAIAAAANAAIAAAAOAAIAAAANAAIAAAAPAAIAAAANAAIAAAAQAAIAAAANAAIAAAARAAIAAAANAAIAAAASAAIAAAANAAIAAAATAAIAAAANAAIAAAAUAAIAAAANAAIAAAAVAAIAAAANAAIAAAAWAAIAAAANAAIAAAAXAAIAAAANAAIAAAAAAAMAAAANAAIAAAABAAMAAAANAAIAAAACAAMAAAANAAIAAAADAAMAAAANAAIAAAAEAAMAAAANAAIAAAAFAAMAAAANAAIAAAAGAAMAAAANAAIAAAAHAAMAAAANAAIAAAAIAAMAAAANAAIAAAAJAAMAAAANAAIAAAAKAAMAAAANAAIAAAALAAMAAAANAAIAAAAMAAMAAAANAAIAAAANAAMAAAANAAIAAAAOAAMAAAANAAIAAAAPAAMAAAANAAIAAAAQAAMAAAANAAIAAAARAAMAAAANAAIAAAASAAMAAAANAAIAAAATAAMAAAANAAIAAAAUAAMAAAANAAIAAAAVAAMAAAANAAIAAAAWAAMAAAANAAIAAAAXAAMAAAANAAIAAAAAAAQAAAANAAIAAAABAAQAAAANAAIAAAACAAQAAAANAAIAAAADAAQAAAANAAIAAAAEAAQAAAANAAIAAAAFAAQAAAANAAIAAAAGAAQAAAANAAIAAAAHAAQAAAANAAIAAAAIAAQAAAANAAIAAAAJAAQAAAANAAIAAAAKAAQAAAANAAIAAAALAAQAAAANAAIAAAAMAAQAAAANAAIAAAANAAQAAAANAAIAAAAOAAQAAAANAAIAAAAPAAQAAAANAAIAAAAQAAQAAAANAAIAAAARAAQAAAANAAIAAAASAAQAAAANAAIAAAATAAQAAAANAAIAAAAUAAQAAAANAAIAAAAVAAQAAAANAAIAAAAWAAQAAAANAAIAAAAXAAQAAAANAAIAAAAAAAUAAAANAAIAAAABAAUAAAANAAIAAAACAAUAAAANAAIAAAADAAUAAAANAAIAAAAEAAUAAAANAAIAAAAFAAUAAAANAAIAAAAGAAUAAAANAAIAAAAHAAUAAAANAAIAAAAIAAUAAAANAAIAAAAJAAUAAAANAAIAAAAKAAUAAAANAAIAAAALAAUAAAANAAIAAAAMAAUAAAANAAIAAAANAAUAAAANAAIAAAAOAAUAAAANAAIAAAAPAAUAAAANAAIAAAAQAAUAAAANAAIAAAARAAUAAAANAAIAAAASAAUAAAANAAIAAAATAAUAAAANAAIAAAAUAAUAAAANAAIAAAAVAAUAAAANAAIAAAAWAAUAAAANAAIAAAAXAAUAAAANAAIAAAAAAAYAAAANAAIAAAABAAYAAAANAAIAAAACAAYAAAANAAIAAAADAAYAAAANAAIAAAAEAAYAAAANAAIAAAAFAAYAAAANAAIAAAAGAAYAAAANAAIAAAAHAAYAAAANAAIAAAAIAAYAAAANAAIAAAAJAAYAAAANAAIAAAAKAAYAAAANAAIAAAALAAYAAAANAAIAAAAMAAYAAAANAAIAAAANAAYAAAANAAIAAAAOAAYAAAANAAIAAAAPAAYAAAANAAIAAAAQAAYAAAANAAIAAAARAAYAAAANAAIAAAASAAYAAAANAAIAAAATAAYAAAANAAIAAAAUAAYAAAANAAIAAAAVAAYAAAANAAIAAAAWAAYAAAANAAIAAAAXAAYAAAANAAIAAAAAAAcAAAANAAIAAAABAAcAAAANAAIAAAACAAcAAAANAAIAAAADAAcAAAANAAIAAAAEAAcAAAANAAIAAAAFAAcAAAANAAIAAAAGAAcAAAANAAIAAAAHAAcAAAANAAIAAAAIAAcAAAANAAIAAAAJAAcAAAANAAIAAAAKAAcAAAANAAIAAAALAAcAAAANAAIAAAAMAAcAAAANAAIAAAANAAcAAAANAAIAAAAOAAcAAAANAAIAAAAPAAcAAAANAAIAAAAQAAcAAAANAAIAAAARAAcAAAANAAIAAAASAAcAAAANAAIAAAATAAcAAAANAAIAAAAUAAcAAAANAAIAAAAVAAcAAAANAAIAAAAWAAcAAAANAAIAAAAXAAcAAAANAAIAAAAAAAgAAAANAAIAAAABAAgAAAANAAIAAAACAAgAAAANAAIAAAADAAgAAAANAAIAAAAEAAgAAAANAAIAAAAFAAgAAAANAAIAAAAGAAgAAAANAAIAAAAHAAgAAAANAAIAAAAIAAgAAAANAAIAAAAJAAgAAAANAAIAAAAKAAgAAAANAAIAAAALAAgAAAANAAIAAAAMAAgAAAANAAIAAAANAAgAAAANAAIAAAAOAAgAAAANAAIAAAAPAAgAAAANAAIAAAAQAAgAAAANAAIAAAARAAgAAAANAAIAAAASAAgAAAANAAIAAAATAAgAAAANAAIAAAAUAAgAAAANAAIAAAAVAAgAAAANAAIAAAAWAAgAAAANAAIAAAAXAAgAAAANAAIAAAAAAAkAAAANAAIAAAABAAkAAAANAAIAAAACAAkAAAANAAIAAAADAAkAAAANAAIAAAAEAAkAAAANAAIAAAAFAAkAAAANAAIAAAAGAAkAAAANAAIAAAAHAAkAAAANAAIAAAAIAAkAAAANAAIAAAAJAAkAAAANAAIAAAAKAAkAAAANAAIAAAALAAkAAAANAAIAAAAMAAkAAAANAAIAAAANAAkAAAANAAIAAAAOAAkAAAANAAIAAAAPAAkAAAANAAIAAAAQAAkAAAANAAIAAAARAAkAAAANAAIAAAASAAkAAAANAAIAAAATAAkAAAANAAIAAAAUAAkAAAANAAIAAAAVAAkAAAANAAIAAAAWAAkAAAANAAIAAAAXAAkAAAANAAIAAAAAAAoAAAANAAIAAAABAAoAAAANAAIAAAACAAoAAAANAAIAAAADAAoAAAANAAIAAAAEAAoAAAANAAIAAAAFAAoAAAANAAIAAAAGAAoAAAANAAIAAAAHAAoAAAANAAIAAAAIAAoAAAANAAIAAAAJAAoAAAANAAIAAAAKAAoAAAANAAIAAAALAAoAAAANAAIAAAAMAAoAAAANAAIAAAANAAoAAAANAAIAAAAOAAoAAAANAAIAAAAPAAoAAAANAAIAAAAQAAoAAAANAAIAAAARAAoAAAANAAIAAAASAAoAAAANAAIAAAATAAoAAAANAAIAAAAUAAoAAAANAAIAAAAVAAoAAAANAAIAAAAWAAoAAAANAAIAAAAXAAoAAAANAAIAAAAAAAsAAAANAAIAAAABAAsAAAANAAIAAAACAAsAAAANAAIAAAADAAsAAAANAAIAAAAEAAsAAAANAAIAAAAFAAsAAAANAAIAAAAGAAsAAAANAAIAAAAHAAsAAAANAAIAAAAIAAsAAAANAAIAAAAJAAsAAAANAAIAAAAKAAsAAAANAAIAAAALAAsAAAANAAIAAAAMAAsAAAANAAIAAAANAAsAAAANAAIAAAAOAAsAAAANAAIAAAAPAAsAAAANAAIAAAAQAAsAAAANAAIAAAARAAsAAAANAAIAAAASAAsAAAANAAIAAAATAAsAAAANAAIAAAAUAAsAAAANAAIAAAAVAAsAAAANAAIAAAAWAAsAAAANAAIAAAAXAAsAAAANAAIAAAAAAAwAAAANAAIAAAABAAwAAAANAAIAAAACAAwAAAANAAIAAAADAAwAAAANAAIAAAAEAAwAAAANAAIAAAAFAAwAAAANAAIAAAAGAAwAAAANAAIAAAAHAAwAAAANAAIAAAAIAAwAAAANAAIAAAAJAAwAAAANAAIAAAAKAAwAAAANAAIAAAALAAwAAAANAAIAAAAMAAwAAAANAAIAAAANAAwAAAANAAIAAAAOAAwAAAANAAIAAAAPAAwAAAANAAIAAAAQAAwAAAANAAIAAAARAAwAAAANAAIAAAASAAwAAAANAAIAAAATAAwAAAANAAIAAAAUAAwAAAANAAIAAAAVAAwAAAANAAIAAAAWAAwAAAANAAIAAAAXAAwAAAANAAIAAAAAAA0AAAANAAIAAAABAA0AAAANAAIAAAACAA0AAAANAAIAAAADAA0AAAANAAIAAAAEAA0AAAANAAIAAAAFAA0AAAANAAIAAAAGAA0AAAANAAIAAAAHAA0AAAANAAIAAAAIAA0AAAANAAIAAAAJAA0AAAANAAIAAAAKAA0AAAANAAIAAAALAA0AAAANAAIAAAAMAA0AAAANAAIAAAANAA0AAAANAAIAAAAOAA0AAAANAAIAAAAPAA0AAAANAAIAAAAQAA0AAAANAAIAAAARAA0AAAANAAIAAAASAA0AAAANAAIAAAATAA0AAAANAAIAAAAUAA0AAAANAAIAAAAVAA0AAAANAAIAAAAWAA0AAAANAAIAAAAXAA0AAAANAAIAAAA=")
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="North" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, 128)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="South" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, 576)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="West" type="CollisionShape2D" parent="Walls"]
+position = Vector2(256, 352)
+shape = SubResource("RectangleShape2D_vertical")
+
+[node name="East" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1024, 352)
+shape = SubResource("RectangleShape2D_vertical")
+
+[node name="WallVisuals" type="Node2D" parent="."]
+z_index = -5
+modulate = Color(1.8, 1.8, 1.8, 1)
+
+[node name="North0" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(272, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North1" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(304, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North2" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(336, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North3" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(368, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North4" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(400, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North5" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(432, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North6" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(464, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North7" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(496, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North8" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(528, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North9" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(560, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North10" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(592, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North11" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(624, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North12" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(656, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North13" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(688, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North14" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(720, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North15" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(752, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North16" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(784, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North17" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(816, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North18" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(848, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North19" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(880, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North20" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(912, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North21" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(944, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North22" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(976, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="North23" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1008, 128)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South0" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(272, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South1" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(304, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South2" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(336, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South3" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(368, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South4" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(400, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South5" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(432, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South6" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(464, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South7" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(496, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South8" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(528, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South9" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(560, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South10" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(592, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South11" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(624, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South12" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(656, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South13" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(688, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South14" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(720, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South15" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(752, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South16" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(784, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South17" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(816, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South18" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(848, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South19" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(880, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South20" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(912, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South21" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(944, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South22" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(976, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="South23" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1008, 576)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West0" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 144)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West1" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 176)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West2" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 208)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West3" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 240)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West4" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 272)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West5" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 304)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West6" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 336)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West7" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 368)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West8" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 400)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West9" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 432)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West10" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 464)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West11" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 496)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West12" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 528)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="West13" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(256, 560)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East0" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 144)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East1" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 176)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East2" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 208)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East3" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 240)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East4" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 272)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East5" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 304)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East6" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 336)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East7" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 368)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East8" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 400)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East9" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 432)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East10" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 464)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East11" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 496)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East12" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 528)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="East13" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(1024, 560)
+rotation = 1.5707963
+texture = SubResource("AtlasTexture_wall")
+
+[node name="Shelf" type="StaticBody2D" parent="."]
+position = Vector2(384, 256)
+collision_layer = 1
+collision_mask = 1
+
+[node name="Visual" type="Sprite2D" parent="Shelf"]
+z_index = -1
+scale = Vector2(2, 2)
+modulate = Color(1.8, 1.8, 1.8, 1)
+texture = SubResource("AtlasTexture_furniture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelf"]
+shape = SubResource("RectangleShape2D_furniture")
+
+[node name="Cabinet" type="StaticBody2D" parent="."]
+position = Vector2(896, 256)
+collision_layer = 1
+collision_mask = 1
+
+[node name="Visual" type="Sprite2D" parent="Cabinet"]
+z_index = -1
+scale = Vector2(2, 2)
+modulate = Color(1.8, 1.8, 1.8, 1)
+texture = SubResource("AtlasTexture_furniture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cabinet"]
+shape = SubResource("RectangleShape2D_furniture")
+
+[node name="ExitMarkerVisual" type="Polygon2D" parent="."]
+z_index = -4
+color = Color(0.08, 0.10, 0.075, 1)
+polygon = PackedVector2Array(617, 550, 663, 550, 663, 600, 617, 600)
+metadata/placeholder = true
+
+[node name="ExitLabel" type="Label" parent="."]
+position = Vector2(604, 578)
+mouse_filter = 2
+theme_override_font_sizes/font_size = 16
+text = "SAÍDA"
+metadata/placeholder = true
+
+[node name="EntrySpawn" type="Marker2D" parent="."]
+position = Vector2(640, 512)
+
+[node name="ExitPortal" type="Node2D" parent="."]
+position = Vector2(640, 556)
+script = ExtResource("3_portal")
+destination = &"forest"
+
+[node name="Interactable" type="Area2D" parent="ExitPortal"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_interactable")
+interaction_prompt = "Sair"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal/Interactable"]
+shape = SubResource("CircleShape2D_exit")
+
+[node name="FoodReward" parent="." instance=ExtResource("5_reward")]
+position = Vector2(864, 448)
+
+[connection signal="interacted" from="ExitPortal/Interactable" to="ExitPortal" method="_on_interacted"]

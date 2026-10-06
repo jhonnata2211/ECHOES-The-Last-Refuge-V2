@@ -1,0 +1,112 @@
+[gd_scene load_steps=10 format=3]
+
+; SPRINT 05: montagem técnica com peças do PNG aprovado, sem alterar a fonte.
+[ext_resource type="Texture2D" path="res://assets/environment/buildings/rundown_house/A rundown house.png" id="1_house"]
+[ext_resource type="TileSet" path="res://resources/tilesets/house_wood_tileset.tres" id="2_wood"]
+[ext_resource type="Script" path="res://scripts/world/scene_portal.gd" id="3_portal"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="4_interactable"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wall"]
+atlas = ExtResource("1_house")
+region = Rect2(208, 128, 32, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_window"]
+atlas = ExtResource("1_house")
+region = Rect2(368, 128, 32, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house"]
+size = Vector2(160, 176)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 14.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_door"]
+atlas = ExtResource("1_house")
+region = Rect2(240, 288, 32, 48)
+
+[node name="AbandonedHouse" type="Node2D"]
+texture_filter = 1
+metadata/technical_assembly = true
+metadata/solid_bounds = Rect2(-80, -96, 160, 176)
+
+[node name="Shadow" type="Polygon2D" parent="."]
+color = Color(0.02, 0.025, 0.02, 0.6)
+polygon = PackedVector2Array(-84, -92, 84, -92, 92, 88, -76, 88)
+
+[node name="Roof" type="TileMapLayer" parent="."]
+position = Vector2(-80, -96)
+modulate = Color(1.45, 1.45, 1.45, 1)
+tile_set = ExtResource("2_wood")
+collision_enabled = false
+navigation_enabled = false
+tile_map_data = PackedByteArray("AAAAAAAAAAANAAIAAAABAAAAAAANAAIAAAACAAAAAAANAAIAAAADAAAAAAANAAIAAAAEAAAAAAANAAIAAAAAAAEAAAANAAIAAAABAAEAAAANAAIAAAACAAEAAAANAAIAAAADAAEAAAANAAIAAAAEAAEAAAANAAIAAAAAAAIAAAANAAIAAAABAAIAAAANAAIAAAACAAIAAAANAAIAAAADAAIAAAANAAIAAAAEAAIAAAANAAIAAAAAAAMAAAANAAIAAAABAAMAAAANAAIAAAACAAMAAAANAAIAAAADAAMAAAANAAIAAAAEAAMAAAANAAIAAAA=")
+
+[node name="RoofEdge" type="Polygon2D" parent="."]
+color = Color(0.18, 0.17, 0.14, 1)
+polygon = PackedVector2Array(-80, 27, 80, 27, 80, 32, -80, 32)
+
+[node name="Front" type="Node2D" parent="."]
+modulate = Color(1.8, 1.8, 1.8, 1)
+
+[node name="Panel0" type="Sprite2D" parent="Front"]
+position = Vector2(-64, 56)
+texture = SubResource("AtlasTexture_window")
+
+[node name="Panel1" type="Sprite2D" parent="Front"]
+position = Vector2(-32, 56)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="Panel2" type="Sprite2D" parent="Front"]
+position = Vector2(0, 56)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="Panel3" type="Sprite2D" parent="Front"]
+position = Vector2(32, 56)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="Panel4" type="Sprite2D" parent="Front"]
+position = Vector2(64, 56)
+texture = SubResource("AtlasTexture_window")
+
+[node name="DoorFrame" type="Polygon2D" parent="."]
+color = Color(0.06, 0.075, 0.065, 1)
+polygon = PackedVector2Array(-19, 30, 19, 30, 19, 80, -19, 80)
+metadata/placeholder = true
+
+[node name="Door" type="Sprite2D" parent="."]
+position = Vector2(0, 56)
+texture = SubResource("AtlasTexture_door")
+modulate = Color(2, 2, 2, 1)
+
+[node name="DoorHandle" type="Polygon2D" parent="."]
+color = Color(0.7, 0.65, 0.4, 1)
+polygon = PackedVector2Array(8, 56, 11, 56, 11, 59, 8, 59)
+metadata/placeholder = true
+
+[node name="Structure" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Structure"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_house")
+
+[node name="Entrance" type="Node2D" parent="."]
+position = Vector2(0, 88)
+script = ExtResource("3_portal")
+destination = &"house"
+
+[node name="Interactable" type="Area2D" parent="Entrance"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_interactable")
+interaction_prompt = "Entrar"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entrance/Interactable"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="ReturnSpawn" type="Marker2D" parent="."]
+position = Vector2(0, 128)
+
+[connection signal="interacted" from="Entrance/Interactable" to="Entrance" method="_on_interacted"]

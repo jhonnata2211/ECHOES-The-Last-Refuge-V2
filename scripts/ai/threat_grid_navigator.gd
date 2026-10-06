@@ -34,6 +34,20 @@ func configure(terrain: TileMapLayer, obstacles: TileMapLayer) -> bool:
 	return true
 
 
+func reserve_world_rect(bounds: Rect2) -> bool:
+	# SPRINT 05: incluir construções sólidas na grade existente, sem outro navegador.
+	if _grid == null or not is_instance_valid(_terrain) or not bounds.position.is_finite() or not bounds.size.is_finite() or bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
+		return false
+	var first: Vector2i = _terrain.local_to_map(_terrain.to_local(bounds.position))
+	var last: Vector2i = _terrain.local_to_map(_terrain.to_local(bounds.end - Vector2(0.001, 0.001)))
+	var affected: bool = false
+	for y in range(maxi(first.y, _grid.region.position.y), mini(last.y, _grid.region.end.y - 1) + 1):
+		for x in range(maxi(first.x, _grid.region.position.x), mini(last.x, _grid.region.end.x - 1) + 1):
+			_grid.set_point_solid(Vector2i(x, y), true)
+			affected = true
+	return affected
+
+
 func find_path(from_position: Vector2, destination: Vector2) -> PackedVector2Array:
 	var result: PackedVector2Array = PackedVector2Array()
 	if _grid == null or not is_instance_valid(_terrain) or not from_position.is_finite() or not destination.is_finite():

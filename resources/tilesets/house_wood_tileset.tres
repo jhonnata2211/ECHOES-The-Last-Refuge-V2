@@ -1,0 +1,12 @@
+[gd_resource type="TileSet" format=3 uid="uid://tlb7f5p5gyre"]
+
+[ext_resource type="Texture2D" uid="uid://cojuptxosscrp" path="res://assets/environment/buildings/rundown_house/A rundown house.png" id="1_house"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wood"]
+texture = ExtResource("1_house")
+texture_region_size = Vector2i(32, 32)
+13:2/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_wood")

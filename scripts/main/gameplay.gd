@@ -7,6 +7,9 @@ var _resume_serial: int = 0
 
 func _ready() -> void:
 	$StealthPrototypeThreat.configure_world($TestWorld/Tiles/Terrain, $TestWorld/Tiles/Obstacles)
+	var house_bounds: Rect2 = $AbandonedHouse.get_meta("solid_bounds")
+	house_bounds.position += $AbandonedHouse.global_position
+	$StealthPrototypeThreat/ThreatGridNavigator.reserve_world_rect(house_bounds)
 	$StealthPrototypeThreat.bind_noise_source($Player/PlayerNoiseComponent)
 	$StealthTestListener/NoiseListenerComponent.bind_source($Player/PlayerNoiseComponent)
 	$Player/SurvivalDamageComponent.bind_sources($Player/SurvivalNeedsComponent, $Player/HealthComponent)
@@ -18,7 +21,17 @@ func _ready() -> void:
 	$InventorySoundFeedback.bind_sources($InventoryPanel, $Player/ConsumableUseComponent)
 	$InventoryPanel.open_changed.connect(_on_inventory_open_changed)
 	var sound: SoundExperienceController = get_tree().root.get_node("SoundExperience")
+	var outside: Array[Node2D] = [$TestWorld, $InteractionTestObject, $Sucata, $Sucata2, $Water, $Water2, $Food, $Food2, $StealthTestListener, $StealthPrototypeThreat, $AbandonedHouse]
+	if not $InteriorTransition.configure($Player, $TouchControls, $InventoryPanel, outside, $AbandonedHouse/Entrance, $AbandonedHouse/ReturnSpawn):
+		$AbandonedHouse/Entrance/Interactable.enabled = false
+		push_error("SPRINT 05: interior indisponível; porta desabilitada sem alterar Player.")
+	$InteriorTransition.area_changed.connect(_on_area_changed)
 	sound.start_forest()
+
+
+func _on_area_changed(area_id: StringName) -> void:
+	var sound: SoundExperienceController = get_tree().root.get_node("SoundExperience")
+	sound.set_forest_interior(area_id == &"house")
 
 
 func _on_inventory_open_changed(opened: bool) -> void:
