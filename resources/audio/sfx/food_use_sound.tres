@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemUseSound" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/item_use_sound.gd" id="1_definition"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/consumables/eat_food.mp3" id="2_audio"]
+
+[resource]
+script = ExtResource("1_definition")
+item_id = &"food"
+stream = ExtResource("2_audio")
+volume_db = -10.0

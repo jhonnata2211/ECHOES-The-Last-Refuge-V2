@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="2_touch_controls"]
@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" path="res://scenes/items/FoodPickup.tscn" id="10_food_pickup"]
 
 [ext_resource type="PackedScene" path="res://scenes/objects/StealthTestListener.tscn" id="11_stealth_test"]
+
+[ext_resource type="PackedScene" path="res://scenes/ai/StealthPrototypeThreat.tscn" id="12_threat"]
+[ext_resource type="PackedScene" path="res://scenes/audio/InventorySoundFeedback.tscn" id="13_feedback"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("6_gameplay")
@@ -50,6 +53,11 @@ position = Vector2(528, 1200)
 
 [node name="StealthTestListener" parent="." instance=ExtResource("11_stealth_test")]
 position = Vector2(720, 1136)
+
+[node name="StealthPrototypeThreat" parent="." instance=ExtResource("12_threat")]
+position = Vector2(784, 1008)
+
+[node name="InventorySoundFeedback" parent="." instance=ExtResource("13_feedback")]
 
 [connection signal="direction_changed" from="TouchControls/VirtualJoystick" to="Player" method="set_touch_direction"]
 [connection signal="sprint_changed" from="TouchControls/SprintButton" to="Player" method="set_touch_sprint_pressed"]

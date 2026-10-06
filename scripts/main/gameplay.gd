@@ -6,6 +6,8 @@ var _resume_serial: int = 0
 
 
 func _ready() -> void:
+	$StealthPrototypeThreat.configure_world($TestWorld/Tiles/Terrain, $TestWorld/Tiles/Obstacles)
+	$StealthPrototypeThreat.bind_noise_source($Player/PlayerNoiseComponent)
 	$StealthTestListener/NoiseListenerComponent.bind_source($Player/PlayerNoiseComponent)
 	$Player/SurvivalDamageComponent.bind_sources($Player/SurvivalNeedsComponent, $Player/HealthComponent)
 	$Player/ConsumableUseComponent.bind_sources($Player/Inventory, $Player/SurvivalNeedsComponent)
@@ -13,6 +15,7 @@ func _ready() -> void:
 	$GameplayHUD.bind_survival($Player/SurvivalNeedsComponent)
 	$InventoryPanel.bind_inventory($Player/Inventory)
 	$InventoryPanel.bind_consumer($Player/ConsumableUseComponent)
+	$InventorySoundFeedback.bind_sources($InventoryPanel, $Player/ConsumableUseComponent)
 	$InventoryPanel.open_changed.connect(_on_inventory_open_changed)
 	var sound: SoundExperienceController = get_tree().root.get_node("SoundExperience")
 	sound.start_forest()

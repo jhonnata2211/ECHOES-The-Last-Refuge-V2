@@ -2,6 +2,7 @@ class_name InventoryPanel
 extends CanvasLayer
 
 signal open_changed(opened: bool)
+signal item_selected_by_user(item_id: StringName)
 
 var _inventory: Inventory = null
 var _consumer: ConsumableUseComponent = null
@@ -117,6 +118,7 @@ func _select_item(item_id: StringName) -> void:
 		_use_button.hide()
 	_selected_item = item_id
 	_update_selection()
+	item_selected_by_user.emit(item_id)
 
 
 func _on_item_tapped(local_position: Vector2) -> void:

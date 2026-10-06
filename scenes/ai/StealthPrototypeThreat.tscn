@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ai/stealth_prototype_threat.gd" id="1_threat"]
+[ext_resource type="Script" path="res://scripts/components/noise_listener_component.gd" id="2_listener"]
+[ext_resource type="Script" path="res://scripts/ai/threat_grid_navigator.gd" id="3_grid"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_threat"]
+radius = 10.0
+
+[node name="StealthPrototypeThreat" type="CharacterBody2D"]
+motion_mode = 1
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_threat")
+metadata/placeholder = true
+metadata/prototype_only = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_threat")
+
+[node name="NoiseListenerComponent" type="Node2D" parent="."]
+script = ExtResource("2_listener")
+
+[node name="ThreatGridNavigator" type="Node" parent="."]
+script = ExtResource("3_grid")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -84.0
+offset_top = -54.0
+offset_right = 84.0
+offset_bottom = -20.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 13
+text = "IDLE\nPROTÓTIPO"
+horizontal_alignment = 1

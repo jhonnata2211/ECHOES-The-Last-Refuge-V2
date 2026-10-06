@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/inventory_sound_feedback.gd" id="1_feedback"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui/inventory_zipper.mp3" id="2_zipper"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui/item_select.mp3" id="3_select"]
+[ext_resource type="Script" path="res://scripts/audio/item_use_sound.gd" id="4_definition"]
+[ext_resource type="Resource" path="res://resources/audio/sfx/food_use_sound.tres" id="5_food"]
+[ext_resource type="Resource" path="res://resources/audio/sfx/water_use_sound.tres" id="6_water"]
+
+[node name="InventorySoundFeedback" type="Node"]
+process_mode = 3
+script = ExtResource("1_feedback")
+zipper_stream = ExtResource("2_zipper")
+selection_stream = ExtResource("3_select")
+use_sounds = Array[ExtResource("4_definition")]([ExtResource("5_food"), ExtResource("6_water")])
+metadata/provisional_audio = true
+
+[node name="InventoryAudio" type="AudioStreamPlayer" parent="."]
+
+[node name="SelectionAudio" type="AudioStreamPlayer" parent="."]
+
+[node name="ConsumptionAudio" type="AudioStreamPlayer" parent="."]
