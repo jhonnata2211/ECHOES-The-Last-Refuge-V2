@@ -1,9 +1,14 @@
 extends CharacterBody2D
 
 const JOHN_TEXTURE_PATH: String = "res://assets/sprites/player/john_v1.png"
+const JOHN_V2_IDLE_PATH: String = "res://resources/player/john_v2_idle_frames.tres"
+const JOHN_V2_TEXTURE_PATH: String = "res://assets/player/john_v2/john_v2_idle.png"
 
 @export var move_speed: float = 200.0
 @export var sprint_speed: float = 320.0
+
+@export_group("John V2 Idle / visual provisório")
+@export_range(0.01, 2.0, 0.01) var john_v2_idle_scale: float = 0.25
 
 @export_group("Stamina")
 @export var max_stamina: float = 100.0
@@ -23,6 +28,11 @@ signal stamina_changed(current: float, maximum: float)
 
 var _facing_direction: StringName = &"down"
 var _has_john_frames: bool = false
+var _john_v1_frames: SpriteFrames = null
+var _john_v2_idle_frames: SpriteFrames = null
+var _john_v1_visual_scale: Vector2 = Vector2.ONE
+var _john_v1_visual_offset: Vector2 = Vector2.ZERO
+var _john_v1_idle_floors: Dictionary = {}
 var _touch_direction := Vector2.ZERO
 var _touch_sprint_pressed: bool = false
 
@@ -34,9 +44,13 @@ var _stamina_recovery_timer: float = 0.0
 
 
 func _ready() -> void:
+        _john_v1_visual_scale = _animated_sprite.scale
+        _john_v1_visual_offset = _animated_sprite.offset
         _stamina = max_stamina
         _bind_john_atlas()
         _has_john_frames = _has_complete_animation_set()
+        _john_v1_frames = _animated_sprite.sprite_frames
+        _load_john_v2_idle()
         _animated_sprite.visible = _has_john_frames
         _placeholder_sprite.visible = not _has_john_frames
         _update_animation(Vector2.ZERO)
@@ -161,7 +175,10 @@ func _update_animation(input_direction: Vector2) -> void:
         var state := "idle" if input_direction.is_zero_approx() or get_real_velocity().is_zero_approx() else "walk"
         var animation_name := StringName("%s_%s" % [state, _facing_direction])
         if _has_john_frames:
-                _animated_sprite.play(animation_name)
+                if state == "idle" and not _crouch.is_crouched() and _john_v2_idle_frames != null:
+                        _play_john_visual(_john_v2_idle_frames, StringName("idle_%s_v2" % _facing_direction), true)
+                else:
+                        _play_john_visual(_john_v1_frames, animation_name, false)
         else:
                 # Sem arte de produção: selecionar o estado sem tocar animações vazias.
                 _animated_sprite.animation = animation_name
@@ -200,3 +217,79 @@ func _has_complete_animation_set() -> bool:
                                 if texture is AtlasTexture and texture.atlas.get_size() != Vector2(192, 384):
                                         return false
         return true
+
+
+func _load_john_v2_idle() -> void:
+        # V2 opcional: sua falha nunca invalida o V1 já verificado.
+        if not _has_john_frames or not is_finite(john_v2_idle_scale) or john_v2_idle_scale <= 0.0:
+                return
+        if not ResourceLoader.exists(JOHN_V2_IDLE_PATH, "SpriteFrames") or not ResourceLoader.exists(JOHN_V2_TEXTURE_PATH, "Texture2D"):
+                return
+        var candidate := ResourceLoader.load(JOHN_V2_IDLE_PATH, "SpriteFrames") as SpriteFrames
+        if not _has_valid_john_v2_idle(candidate):
+                push_warning("John V2 Idle inválido; Idle V1 preservado.")
+                return
+        if not _cache_john_v1_idle_floors():
+                push_warning("Referência visual do V1 indisponível; Idle V1 preservado.")
+                return
+        _john_v2_idle_frames = candidate
+
+
+func _has_valid_john_v2_idle(frames: SpriteFrames) -> bool:
+        if frames == null:
+                return false
+        var directions := ["down", "up", "left", "right"]
+        for row in range(directions.size()):
+                var animation_name := StringName("idle_%s_v2" % directions[row])
+                if not frames.has_animation(animation_name) or frames.get_frame_count(animation_name) != 5:
+                        return false
+                if not frames.get_animation_loop(animation_name) or not is_equal_approx(frames.get_animation_speed(animation_name), 4.0):
+                        return false
+                for column in range(5):
+                        var texture := frames.get_frame_texture(animation_name, column) as AtlasTexture
+                        if texture == null or texture.atlas == null:
+                                return false
+                        if texture.atlas.resource_path != JOHN_V2_TEXTURE_PATH or texture.atlas.get_size() != Vector2(960, 1024):
+                                return false
+                        if texture.region != Rect2(column * 192, row * 256, 192, 256):
+                                return false
+                        if not is_equal_approx(frames.get_frame_duration(animation_name, column), 1.0):
+                                return false
+        return true
+
+
+func _cache_john_v1_idle_floors() -> bool:
+        for direction in ["down", "up", "left", "right"]:
+                var texture := _john_v1_frames.get_frame_texture(StringName("idle_%s" % direction), 0)
+                var image := texture.get_image()
+                if image == null or image.is_empty():
+                        return false
+                var foot_y: int = -1
+                for y in range(image.get_height() - 1, -1, -1):
+                        for x in range(image.get_width()):
+                                if image.get_pixel(x, y).a >= 0.5:
+                                        foot_y = y
+                                        break
+                        if foot_y >= 0:
+                                break
+                if foot_y < 0:
+                        return false
+                var origin_y: float = float(image.get_height()) * 0.5 if _animated_sprite.centered else 0.0
+                _john_v1_idle_floors[StringName(direction)] = float(foot_y) - origin_y
+        return true
+
+
+func _play_john_visual(frames: SpriteFrames, animation_name: StringName, use_v2: bool) -> void:
+        if _animated_sprite.sprite_frames != frames:
+                _animated_sprite.sprite_frames = frames
+                _animated_sprite.set_frame_and_progress(0, 0.0)
+        if use_v2:
+                _animated_sprite.scale = _john_v1_visual_scale * john_v2_idle_scale
+                _animated_sprite.offset = _john_v1_visual_offset / john_v2_idle_scale
+                var v1_floor: float = float(_john_v1_idle_floors[_facing_direction])
+                var v2_floor: float = 232.0 - (128.0 if _animated_sprite.centered else 0.0)
+                _animated_sprite.offset.y += v1_floor / john_v2_idle_scale - v2_floor
+        else:
+                _animated_sprite.scale = _john_v1_visual_scale
+                _animated_sprite.offset = _john_v1_visual_offset
+        _animated_sprite.play(animation_name)
