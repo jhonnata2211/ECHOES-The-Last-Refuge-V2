@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 ; ECHOES-010: cenário provisório de teste (placeholders), sem colisões.
 
 [ext_resource type="TileSet" path="res://resources/tilesets/world_tileset.tres" id="1_world_tileset"]
+[ext_resource type="PackedScene" path="res://scenes/world/ForestDecor.tscn" id="2_forest_decor"]
 
 [node name="TestWorld" type="Node2D"]
 z_index = -10
@@ -96,6 +97,8 @@ color = Color(0.21, 0.24, 0.21, 1)
 polygon = PackedVector2Array(0, 0, 110, 0, 110, 10, 0, 10)
 
 ; ECHOES-012: floresta em tiles 32x32; placeholders antigos ocultos e preservados.
+
+[node name="ForestDecor" parent="." instance=ExtResource("2_forest_decor")]
 
 [node name="Tiles" type="Node2D" parent="."]
 texture_filter = 1
