@@ -1,0 +1,125 @@
+[gd_scene load_steps=5 format=3]
+
+; ECHOES-065C: piloto visual do novo terreno da floresta.
+; Amostra 4x4 de celulas visuais 32x32; atlas 16x16 em escala 2x.
+; Somente visual: sem colisao, navegacao ou alteracao do TileSet original.
+; TestWorld instancia este piloto depois de Terrain, antes de Vegetation.
+
+[ext_resource type="Texture2D" path="res://assets/environment/forest/pixel_lands_demo/forest_demo_terrain.png" id="1_terrain"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass_a"]
+atlas = ExtResource("1_terrain")
+region = Rect2(16, 0, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass_b"]
+atlas = ExtResource("1_terrain")
+region = Rect2(32, 0, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass_c"]
+atlas = ExtResource("1_terrain")
+region = Rect2(48, 0, 16, 16)
+filter_clip = true
+
+[node name="ForestTerrainPilot" type="Node2D"]
+position = Vector2(192, 992)
+z_index = 0
+texture_filter = 1
+metadata/_echoes_task = "ECHOES-065C"
+metadata/_visual_only = true
+
+[node name="GrassTest" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_a")
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass01" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(32, 0)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass02" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_c")
+position = Vector2(64, 0)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass03" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(96, 0)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass10" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(0, 32)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass11" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_a")
+position = Vector2(32, 32)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass12" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(64, 32)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass13" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_c")
+position = Vector2(96, 32)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass20" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_c")
+position = Vector2(0, 64)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass21" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(32, 64)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass22" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_a")
+position = Vector2(64, 64)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass23" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(96, 64)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass30" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(0, 96)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass31" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_c")
+position = Vector2(32, 96)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass32" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_b")
+position = Vector2(64, 96)
+scale = Vector2(2, 2)
+centered = false
+
+[node name="Grass33" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_grass_a")
+position = Vector2(96, 96)
+scale = Vector2(2, 2)
+centered = false
