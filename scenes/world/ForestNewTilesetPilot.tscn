@@ -1,0 +1,278 @@
+[gd_scene load_steps=22 format=3]
+
+; ECHOES-066C: revestimento visual da floresta existente a leste do spawn.
+; Mantem a instancia da 066B em (512, 800); Region soma (224, 160).
+; Origem mundial da regiao: (736, 960). Grade 32x32, escala nativa.
+; Nenhum script, colisao ou navegacao. Obstacles original permanece intacto.
+
+[ext_resource type="Texture2D" path="res://assets/environment/forest/echoes_forest_tileset/forest_tileset.png" id="1_forest"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_grass"]
+texture = ExtResource("1_forest")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_grass"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_grass")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tree_narrow"]
+atlas = ExtResource("1_forest")
+region = Rect2(0, 160, 64, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tree_wide"]
+atlas = ExtResource("1_forest")
+region = Rect2(64, 160, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stump_small"]
+atlas = ExtResource("1_forest")
+region = Rect2(0, 256, 64, 32)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stump_large"]
+atlas = ExtResource("1_forest")
+region = Rect2(64, 256, 96, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stone_a"]
+atlas = ExtResource("1_forest")
+region = Rect2(0, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stone_b"]
+atlas = ExtResource("1_forest")
+region = Rect2(16, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stone_vertical"]
+atlas = ExtResource("1_forest")
+region = Rect2(0, 144, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flowers_white"]
+atlas = ExtResource("1_forest")
+region = Rect2(32, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flower_yellow"]
+atlas = ExtResource("1_forest")
+region = Rect2(48, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flower_blue"]
+atlas = ExtResource("1_forest")
+region = Rect2(64, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flower_cyan"]
+atlas = ExtResource("1_forest")
+region = Rect2(80, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flowers_pink"]
+atlas = ExtResource("1_forest")
+region = Rect2(32, 144, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bush_a"]
+atlas = ExtResource("1_forest")
+region = Rect2(96, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bush_b"]
+atlas = ExtResource("1_forest")
+region = Rect2(112, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mushroom_red"]
+atlas = ExtResource("1_forest")
+region = Rect2(80, 144, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mushroom_small"]
+atlas = ExtResource("1_forest")
+region = Rect2(96, 144, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fern"]
+atlas = ExtResource("1_forest")
+region = Rect2(128, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_log"]
+atlas = ExtResource("1_forest")
+region = Rect2(112, 144, 32, 16)
+filter_clip = true
+
+[node name="ForestNewTilesetPilot" type="Node2D"]
+z_index = 3
+texture_filter = 1
+metadata/_echoes_task = "ECHOES-066C"
+metadata/_visual_only = true
+
+[node name="Region" type="Node2D" parent="."]
+position = Vector2(224, 160)
+
+[node name="Floor" type="TileMapLayer" parent="Region"]
+tile_map_data = PackedByteArray("AAACAAAAAAACAAAAAAADAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAFAAAAAAABAAAAAAAGAAAAAAACAAAAAAAHAAAAAAACAAAAAAAIAAAAAAABAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAACAAAAAAALAAAAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAACAAAAAAAEAAEAAAAAAAAAAAAFAAEAAAACAAAAAAAGAAEAAAABAAAAAAAHAAEAAAAAAAAAAAAIAAEAAAACAAAAAAAJAAEAAAABAAAAAAAKAAEAAAAAAAAAAAALAAEAAAAAAAAAAAACAAIAAAAAAAAAAAADAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAAFAAIAAAABAAAAAAAGAAIAAAAAAAAAAAAHAAIAAAAAAAAAAAAIAAIAAAABAAAAAAAJAAIAAAACAAAAAAAKAAIAAAAAAAAAAAALAAIAAAAAAAAAAAACAAMAAAABAAAAAAADAAMAAAAAAAAAAAAEAAMAAAABAAAAAAAFAAMAAAAAAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAAAAAAAAAAIAAMAAAABAAAAAAAJAAMAAAACAAAAAAAKAAMAAAABAAAAAAALAAMAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAFAAQAAAABAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAQAAAABAAAAAAAJAAQAAAACAAAAAAAKAAQAAAAAAAAAAAALAAQAAAACAAAAAAACAAUAAAAAAAAAAAADAAUAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAABAAAAAAAKAAUAAAAAAAAAAAALAAUAAAACAAAAAAACAAYAAAACAAAAAAADAAYAAAAAAAAAAAAEAAYAAAACAAAAAAAFAAYAAAABAAAAAAAGAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAIAAYAAAACAAAAAAAJAAYAAAAAAAAAAAAKAAYAAAACAAAAAAALAAYAAAAAAAAAAAACAAcAAAABAAAAAAADAAcAAAABAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAABAAAAAAAGAAcAAAABAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAAAAAAAAAAKAAcAAAACAAAAAAALAAcAAAAAAAAAAAAAAAgAAAABAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAABAAAAAAAHAAgAAAABAAAAAAAIAAgAAAABAAAAAAAJAAgAAAABAAAAAAAKAAgAAAACAAAAAAALAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAkAAAAAAAAAAAACAAkAAAABAAAAAAADAAkAAAAAAAAAAAAEAAkAAAABAAAAAAAFAAkAAAABAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAkAAAACAAAAAAAKAAkAAAABAAAAAAALAAkAAAABAAAAAAAAAAoAAAABAAAAAAABAAoAAAAAAAAAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAABAAAAAAAFAAoAAAABAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAACAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAABAAAAAAALAAoAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_grass")
+collision_enabled = false
+navigation_enabled = false
+
+[node name="Decor" type="Node2D" parent="Region"]
+z_index = 1
+y_sort_enabled = true
+
+[node name="TreeNarrowA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(144, 120)
+texture = SubResource("AtlasTexture_tree_narrow")
+centered = false
+offset = Vector2(-32, -96)
+
+[node name="TreeWideA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(304, 136)
+texture = SubResource("AtlasTexture_tree_wide")
+centered = false
+offset = Vector2(-48, -96)
+
+[node name="TreeNarrowB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(208, 232)
+texture = SubResource("AtlasTexture_tree_narrow")
+centered = false
+offset = Vector2(-32, -96)
+
+[node name="TreeWideB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(336, 312)
+texture = SubResource("AtlasTexture_tree_wide")
+centered = false
+offset = Vector2(-48, -96)
+
+[node name="TreeNarrowC" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(80, 344)
+texture = SubResource("AtlasTexture_tree_narrow")
+centered = false
+offset = Vector2(-32, -96)
+
+[node name="StumpSmall" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(112, 216)
+texture = SubResource("AtlasTexture_stump_small")
+centered = false
+offset = Vector2(-32, -32)
+
+[node name="StumpLarge" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(336, 216)
+texture = SubResource("AtlasTexture_stump_large")
+centered = false
+offset = Vector2(-48, -64)
+
+[node name="StoneA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(112, 160)
+texture = SubResource("AtlasTexture_stone_a")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="StoneB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(368, 184)
+texture = SubResource("AtlasTexture_stone_b")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="StoneVertical" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(48, 320)
+texture = SubResource("AtlasTexture_stone_vertical")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FlowersWhite" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(104, 56)
+texture = SubResource("AtlasTexture_flowers_white")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FlowerYellow" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(232, 48)
+texture = SubResource("AtlasTexture_flower_yellow")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FlowerBlue" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(288, 176)
+texture = SubResource("AtlasTexture_flower_blue")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FlowerCyan" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(128, 288)
+texture = SubResource("AtlasTexture_flower_cyan")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FlowersPink" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(176, 336)
+texture = SubResource("AtlasTexture_flowers_pink")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="BushA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(176, 160)
+texture = SubResource("AtlasTexture_bush_a")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="BushB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(272, 256)
+texture = SubResource("AtlasTexture_bush_b")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="BushC" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(40, 328)
+texture = SubResource("AtlasTexture_bush_a")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="BushD" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(368, 288)
+texture = SubResource("AtlasTexture_bush_b")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="MushroomRed" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(152, 128)
+texture = SubResource("AtlasTexture_mushroom_red")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="MushroomSmall" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(312, 248)
+texture = SubResource("AtlasTexture_mushroom_small")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FernA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(80, 184)
+texture = SubResource("AtlasTexture_fern")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="FernB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(240, 304)
+texture = SubResource("AtlasTexture_fern")
+centered = false
+offset = Vector2(-8, -16)
+
+[node name="LogA" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(240, 184)
+texture = SubResource("AtlasTexture_log")
+centered = false
+offset = Vector2(-16, -16)
+
+[node name="LogB" type="Sprite2D" parent="Region/Decor"]
+position = Vector2(80, 304)
+texture = SubResource("AtlasTexture_log")
+centered = false
+offset = Vector2(-16, -16)

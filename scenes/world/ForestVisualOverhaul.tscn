@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/forest_visual_overhaul.gd" id="1_visual"]
+[ext_resource type="Texture2D" path="res://assets/environment/forest/echoes_forest_tileset/forest_tileset.png" id="2_forest"]
+
+[node name="ForestVisualOverhaul" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_visual")
+forest_texture = ExtResource("2_forest")
+metadata/_echoes_task = "ECHOES-067"
+metadata/_visual_only = true

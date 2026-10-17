@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 ; ECHOES-065C: piloto visual do novo terreno da floresta.
 ; Amostra 4x4 de celulas visuais 32x32; atlas 16x16 em escala 2x.
@@ -6,6 +6,9 @@
 ; TestWorld instancia este piloto depois de Terrain, antes de Vegetation.
 
 [ext_resource type="Texture2D" path="res://assets/environment/forest/pixel_lands_demo/forest_demo_terrain.png" id="1_terrain"]
+[ext_resource type="PackedScene" path="res://scenes/world/ForestNewTilesetPilot.tscn" id="2_new_forest_pilot"]
+
+[ext_resource type="PackedScene" path="res://scenes/world/ForestVisualOverhaul.tscn" id="4_visual_overhaul"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_grass_a"]
 atlas = ExtResource("1_terrain")
@@ -83,13 +86,13 @@ scale = Vector2(2, 2)
 centered = false
 
 [node name="Grass21" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_grass_b")
+texture = SubResource("AtlasTexture_grass_a")
 position = Vector2(32, 64)
 scale = Vector2(2, 2)
 centered = false
 
 [node name="Grass22" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_grass_a")
+texture = SubResource("AtlasTexture_grass_b")
 position = Vector2(64, 64)
 scale = Vector2(2, 2)
 centered = false
@@ -123,3 +126,9 @@ texture = SubResource("AtlasTexture_grass_a")
 position = Vector2(96, 96)
 scale = Vector2(2, 2)
 centered = false
+
+[node name="ForestNewTilesetPilot" parent="." instance=ExtResource("2_new_forest_pilot")]
+position = Vector2(320, -192)
+
+[node name="ForestVisualOverhaul" parent="." instance=ExtResource("4_visual_overhaul")]
+position = Vector2(-192, -992)
