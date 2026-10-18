@@ -266,6 +266,21 @@ func _build_objects() -> void:
 		var value: int = _value(cell, 4)
 		if not _clear(Rect2(point - Vector2(16, 24), Vector2(32, 40))):
 			continue
+		# ECHOES-068A-LITE: regioes em celulas; somente nesta passagem existente.
+		# 1 inicio, 2 agua, 3 antigas, 4 samambaias, 5 madeira, 6 casa.
+		var habitat: int = 0
+		if cell.x >= 5 && cell.x <= 18 && cell.y >= 31 && cell.y <= 40:
+			habitat = 1
+		elif cell.x >= 2 && cell.x <= 17 && cell.y >= 11 && cell.y <= 22:
+			habitat = 2
+		elif cell.x >= 18 && cell.x <= 30 && cell.y >= 9 && cell.y <= 22:
+			habitat = 3
+		elif cell.x >= 39 && cell.x <= 49 && cell.y >= 9 && cell.y <= 24:
+			habitat = 4
+		elif cell.x >= 25 && cell.x <= 38 && cell.y >= 36 && cell.y <= 42:
+			habitat = 5
+		elif cell.x >= 57 && cell.x <= 74 && cell.y >= 27 && cell.y <= 40:
+			habitat = 6
 		if _blocked.has(cell):
 			var boundary: bool = false
 			for direction in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
@@ -274,18 +289,37 @@ func _build_objects() -> void:
 			if int(_blocked[cell]) == 5:
 				_ground_objects.append(_object(point + Vector2(0, 8), SMALL[value % 3]))
 			elif boundary or value % 4 == 0:
-				_ground_objects.append(_object(point + Vector2(value % 19 - 9, (value / 19) % 15 - 3), SMALL[11 + _value(cell, 5) % 3]))
-				if boundary:
-					_ground_objects.append(_object(point + Vector2(-7, -5), SMALL[11 + _value(cell, 6) % 3]))
+				var plant: int = 11 + _value(cell, 5) % 3
+				if habitat == 2 or habitat == 4:
+					plant = 13 if value % 4 != 0 else plant
+				elif habitat == 3 or habitat == 6:
+					plant = 9 + value % 2 if value % 7 == 0 else plant
+				elif habitat == 5:
+					plant = 9 + (value / 2) % 2 if value % 2 == 0 else 13
+				_ground_objects.append(_object(point + Vector2(value % 19 - 9, (value / 19) % 15 - 3), SMALL[plant]))
+				if boundary and habitat != 1:
+					var edge_plant: int = 11 + _value(cell, 6) % 3
+					if habitat == 2 or habitat == 4:
+						edge_plant = 13
+					_ground_objects.append(_object(point + Vector2(-7, -5), SMALL[edge_plant]))
 			if value % 73 == 0:
 				var rect: Rect2 = STUMPS[value % 2]
 				var base: Vector2 = point + Vector2(0, 10)
 				if _base_fits(base, rect) and _clear(Rect2(base - Vector2(rect.size.x * 0.5, rect.size.y), rect.size)):
 					_ground_objects.append(_object(base, rect))
-			elif value % 47 == 0:
+			elif value % 47 == 0 and (habitat == 5 or habitat == 6 or value % 3 == 0):
 				_ground_objects.append(_object(point + Vector2(0, 8), Rect2(112, 144, 32, 16)))
-		elif not _roads.has(cell) and value % 11 == 0:
-			_ground_objects.append(_object(point + Vector2(value % 9 - 4, 6), SMALL[3 + _value(cell, 6) % 11]))
+		elif not _roads.has(cell) and value % 11 == 0 and habitat != 1:
+			var detail: int = 11 + _value(cell, 6) % 3
+			if habitat == 2:
+				detail = (value / 3) % 3 if value % 3 == 0 else 13
+			elif habitat == 3 or habitat == 5:
+				detail = 9 + value % 2
+			elif habitat == 4:
+				detail = 13
+			elif habitat == 0 and value % 19 == 0:
+				detail = 3 + value % 6
+			_ground_objects.append(_object(point + Vector2(value % 9 - 4, 6), SMALL[detail]))
 	_trees.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["point"].y < b["point"].y)
 	_ground_objects.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["point"].y < b["point"].y)
 
